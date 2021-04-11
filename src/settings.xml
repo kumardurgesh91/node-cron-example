@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<settings>
+   <schedule>* * * * *</schedule>
+   <smtp>
+      <email>kumardurgeshpatel@gmail.com</email>
+      <password>******</password>
+   </smtp>
+   <login>
+      <email>kumardurgeshpatel@gmail.com</email>
+      <password>12345</password>
+   </login>
+</settings>

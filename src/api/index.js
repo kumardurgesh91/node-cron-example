@@ -1,7 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const product_routes = require('./product/product.route');
+const productRoutes = require('./product/product.route');
+const authRoutes = require('./auth/auth.route');
 
 router.get('/', (req, res) => {
   res.json({
@@ -9,6 +10,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/products', product_routes);
+router.use('/auth', authRoutes);
+router.use('/products', productRoutes);
 
 module.exports = router;

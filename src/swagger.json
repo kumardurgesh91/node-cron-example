@@ -1,0 +1,236 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "POC",
+    "description": "POC Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "login and register api"
+    },
+    {
+      "name": "Products",
+      "description": "API for products"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login",
+        "parameters": [
+          {
+            "name": "Credentials",
+            "in": "body",
+            "description": "Email & Password",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register",
+        "parameters": [
+          {
+            "name": "Credentials",
+            "in": "body",
+            "description": "Email & Password",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Auth token returned by login api",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        }
+      }
+    },
+
+    "/products/create": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Create product",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Auth token returned by login api",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Product Info",
+            "in": "body",
+            "description": "Product value",
+            "schema": {
+              "$ref": "#/definitions/CreateProduct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        }
+      }
+    },
+    "/products/queue": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Put products to product queue",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Auth token returned by login api",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "products",
+            "in": "body",
+            "description": "Product value",
+            "type": "object",
+            "properties": {
+              "products": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/products/zone": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Move to product region table and clear product queue",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Auth token returned by login api",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Login": {
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "required": ["email", "password"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        }
+      }
+    },
+    "Product": {
+      "required": ["product_code", "product_value"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "product_code": {
+          "type": "string"
+        },
+        "product_value": {
+          "type": "integer"
+        }
+      }
+    },
+    "CreateProduct": {
+      "required": ["product_value"],
+      "properties": {
+        "product_value": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
