@@ -17,3 +17,6 @@ npm run lint
 ```
 npm run dev
 ```
+## Uses
+
+Edit settings.xml and .env file
