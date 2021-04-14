@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <settings>
-   <schedule>* * * * *</schedule>
+   <schedule>* 0/1 * * *</schedule>
    <smtp>
       <email>kumardurgeshpatel@gmail.com</email>
       <password>******</password>
