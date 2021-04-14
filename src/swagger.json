@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "https://ulabs.herokuapp.com",
+  "host": "ulabs.herokuapp.com",
   "basePath": "/api",
   "tags": [
     {
