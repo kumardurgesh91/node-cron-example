@@ -8,8 +8,9 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   define: dbConfig.define,
   logging: false,
   dialectOptions: {
+    ssl: true,
     connectTimeout: 60000
-  }
+  },
   pool: {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,
