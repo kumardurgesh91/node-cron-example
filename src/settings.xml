@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <settings>
-   <schedule>* 0/1 * * *</schedule>
+   <schedule>*/5 * * * *</schedule>
    <smtp>
-      <email>kumardurgeshpatel@gmail.com</email>
-      <password>******</password>
+      <email>dummy.utkallabs@gmail.com</email>
+      <password>Abcd@123</password>
    </smtp>
    <login>
-      <email>kumardurgeshpatel@gmail.com</email>
-      <password>12345</password>
+      <email>dummy.utkallabs@gmail.com</email>
+      <password>test@123</password>
    </login>
 </settings>
