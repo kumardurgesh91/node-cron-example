@@ -92,7 +92,7 @@ class Schedular {
       log.info('Sync completed Successfully!!');
       const productRegions = await this.getProductRegionDataToMail();
       let emailHtml = `<h1>${zoneResponse.data.productQueue.length} products added to zone</h1>
-      <table border="1px"><tr><td>Product Queue Id</td><td>Product Code</td><td>Product Value</td></tr>`;
+      <table border="1px"><tr><td>Product Code</td><td>Product Value</td><td>Sales Region</td></tr>`;
 
       // eslint-disable-next-line no-restricted-syntax
       for (const prod of productRegions) {
