@@ -9,6 +9,10 @@ module.exports = (sequelize, Sequelize) => {
     product_value: {
       type: Sequelize.NUMBER,
     },
+    is_processed: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return Product;

@@ -97,6 +97,30 @@
       }
     },
 
+    "/products/to-process": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products which is not moved to zone table",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Auth token returned by login api",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        }
+      }
+    },
+
     "/products/create": {
       "post": {
         "tags": ["Products"],
@@ -213,14 +237,14 @@
     "Product": {
       "required": ["product_code", "product_value"],
       "properties": {
-        "id": {
-          "type": "string"
-        },
         "product_code": {
           "type": "string"
         },
         "product_value": {
           "type": "integer"
+        },
+        "is_processed": {
+          "type": "boolean"
         }
       }
     },

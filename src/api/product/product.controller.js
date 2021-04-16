@@ -10,6 +10,17 @@ module.exports = {
     }
   },
 
+  getNonProcessedProducts: async (req, res, next) => {
+    try {
+      const products = await db.Product.findAll({
+        where: { is_processed: false },
+      });
+      return res.send({ success: true, products });
+    } catch (e) {
+      return next(e);
+    }
+  },
+
   create: async (req, res, next) => {
     try {
       const { product_value } = req.body;
@@ -26,7 +37,10 @@ module.exports = {
       const queueProducts = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const product of products) {
-        queueProducts.push({ product_value: product.product_value });
+        queueProducts.push({
+          product_value: product.product_value,
+          product_code: product.product_code,
+        });
       }
       await db.ProductQueue.bulkCreate(queueProducts);
       return res.send({ success: true });
@@ -40,16 +54,23 @@ module.exports = {
     try {
       const productQueue = await db.ProductQueue.findAll();
       const productRegion = [];
-      const productQueueIds = [];
+      const productCodeIds = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const product of productQueue) {
         productRegion.push({
           zone: product.product_value > 50 ? 'Zone 1' : 'Zone 2',
+          product_code: product.product_code,
         });
-        productQueueIds.push(product.id);
+        productCodeIds.push(product.product_code);
       }
       await db.ProductRegion.bulkCreate(productRegion);
-      await db.ProductQueue.destroy({ where: { id: productQueueIds } });
+      await db.ProductQueue.destroy({
+        where: { product_code: productCodeIds },
+      });
+      await db.Product.update(
+        { is_processed: true },
+        { where: { product_code: productCodeIds } }
+      );
       await transaction.commit();
       return res.send({ success: true, productQueue });
     } catch (e) {

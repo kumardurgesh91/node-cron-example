@@ -5,6 +5,7 @@ const Auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router.get('/', Auth.verifyToken, controller.get);
+router.get('/to-process', Auth.verifyToken, controller.getNonProcessedProducts);
 router.post('/create', Auth.verifyToken, controller.create);
 router.post('/queue', Auth.verifyToken, controller.queue);
 router.post('/zone', Auth.verifyToken, controller.zone);

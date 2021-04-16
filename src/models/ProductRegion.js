@@ -6,6 +6,11 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       primaryKey: true,
     },
+    product_code: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      allowNull: false,
+    },
     zone: {
       type: Sequelize.STRING,
     },
