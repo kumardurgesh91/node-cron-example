@@ -2,13 +2,26 @@ const cron = require('node-cron');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const { QueryTypes } = require('sequelize');
 const settings = require('./config/settings');
 const log = require('./services/log.service');
 const sendMail = require('./services/email.service');
+const db = require('./models');
 
 class Schedular {
   constructor() {
     this.task = null;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getProductRegionDataToMail() {
+    const zoneData = db.sequelize.query(
+      'SELECT pr.*, p.product_value FROM products_regions pr, products p where pr.product_code=p.product_code',
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
+    return zoneData;
   }
 
   async syncProducts() {
@@ -38,7 +51,7 @@ class Schedular {
       log.info(`Auth User ${JSON.stringify(user)}`);
 
       const productResponse = await axios.get(
-        `${process.env.APP_URL}/api/products`,
+        `${process.env.APP_URL}/api/products/to-process`,
         {
           headers: { authorization: token },
         }
@@ -77,13 +90,13 @@ class Schedular {
         throw new Error(`Error zone ${JSON.stringify(productResponse.data)}`);
       }
       log.info('Sync completed Successfully!!');
-
-      let emailHtml = `<h1>Report</h1>
-      <table><tr><td>Product Queue Id</td><td>Product Value</td></tr>`;
+      const productRegions = await this.getProductRegionDataToMail();
+      let emailHtml = `<h1>${zoneResponse.data.productQueue.length} products added to zone</h1>
+      <table border="1px"><tr><td>Product Queue Id</td><td>Product Code</td><td>Product Value</td></tr>`;
 
       // eslint-disable-next-line no-restricted-syntax
-      for (const prod of zoneResponse.data.productQueue) {
-        emailHtml += `<tr><td>${prod.id}</td><td>${prod.product_value}</td></tr>`;
+      for (const prod of productRegions) {
+        emailHtml += `<tr><td>${prod.product_code}</td><td>${prod.product_value}</td><td>${prod.zone}</td></tr>`;
       }
 
       emailHtml += '</table>';
